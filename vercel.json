@@ -3,35 +3,20 @@
     "builds": [
       {
         "src": "package.json",
-        "use": "@vercel/node",
+        "use": "@vercel/static-build",
         "config": {
-          "maxLambdaSize": "50mb"
+          "distDir": "dist",
+          "buildCommand": "chmod +x build.sh && ./build.sh"
         }
       }
     ],
     "routes": [
       {
-        "src": "/(.*)",
-        "dest": "/"
-      }
-    ],
-    "env": {
-      "NODE_ENV": "production"
-    },
-    "build": {
-      "env": {
-        "NODE_OPTIONS": "--max-old-space-size=4096"
-      }
-    },
-    "headers": [
+        "handle": "filesystem"
+      },
       {
-        "source": "/(.*)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "s-maxage=1, stale-while-revalidate=59"
-          }
-        ]
+        "src": "/.*",
+        "dest": "/index.html"
       }
     ]
   }
